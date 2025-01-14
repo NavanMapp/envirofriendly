@@ -24,7 +24,7 @@ public class RecyclingService {
         recyclePrices.put("copper", 2.5);
         recyclePrices.put("glass", 1.7);
         recyclePrices.put("metal", 1.2);
-        recyclePrices.put("steel", 3.0);
+        recyclePrices.put("plastic", 3.0);
         recyclePrices.put("tin", 0.7);
     }
 

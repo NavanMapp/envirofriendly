@@ -1,6 +1,5 @@
 package com.enviro.assessment.grad001.navanmaphalala.controller;
 
-import com.enviro.assessment.grad001.navanmaphalala.model.User;
 import com.enviro.assessment.grad001.navanmaphalala.model.Recycling;
 import com.enviro.assessment.grad001.navanmaphalala.service.RecyclingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,7 @@ public class RecyclingController {
 
     @GetMapping("/price/")
     public double getPriceForType(@RequestParam String type, @RequestParam double price) {
-        recyclingService.getPricePerType(type);
+        return recyclingService.getPricePerType(type);
     }
 
     public static class RecycleRequest {

@@ -31,15 +31,15 @@ public class Recycling {
         return price;
     }
     public Long getId() { return id; }
-    public String getUserName() { return name; }
+    public String getName() { return name; }
     public String getEmail() { return email; }
     public String getType() { return type; }
     public String getLocation() { return location; }
-    public Integer getQuantity() { return quantity; }
+    public double getQuantity() { return quantity; }
 
     // Setters
     public void setId(Long id) { this.id = id; }
-    public void setUserName(String name) { this.name = name; }
+    public void setName(String name) { this.name = name; }
     public void setEmail(String email) { this.email = email; }
     public void setLocation(String location) { this.location = location; }
     public void setQuantity(Integer quantity) { this.quantity = quantity; }
