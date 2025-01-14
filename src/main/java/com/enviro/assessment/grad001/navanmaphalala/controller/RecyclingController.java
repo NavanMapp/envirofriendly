@@ -25,6 +25,7 @@ public class RecyclingController {
                 request.getEmail(),
                 request.getType(),
                 request.getLocation(),
+                request.getTip(),
                 request.getQuantity()
         );
     }
@@ -49,6 +50,7 @@ public class RecyclingController {
         private String email;
         private String type;
         private String location;
+        private String tip;
         private double quantity;
 
 
@@ -57,6 +59,7 @@ public class RecyclingController {
         public String getEmail() { return email; }
         public String getType() { return type; }
         public String getLocation() { return location; }
+        public String getTip() { return tip; }
         public double getQuantity() { return quantity; }
 
         // Setters for user input

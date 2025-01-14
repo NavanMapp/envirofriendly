@@ -1,6 +1,7 @@
 package com.enviro.assessment.grad001.navanmaphalala.service;
 
 import com.enviro.assessment.grad001.navanmaphalala.model.Recycling;
+import com.enviro.assessment.grad001.navanmaphalala.model.Tips;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class RecyclingService {
 
     private final List<Recycling> records = new ArrayList<>();
     private final HashMap<String, Double> recyclePrices = new HashMap<>();
+    private final Tips tips;
 
     /* HashMap to assist with material types being recycled and their prices for calculating
     ** recycle waste per kg a user takes to recycling dump site
@@ -26,13 +28,15 @@ public class RecyclingService {
         recyclePrices.put("metal", 1.2);
         recyclePrices.put("plastic", 3.0);
         recyclePrices.put("tin", 0.7);
+
+        this.tips = new Tips();
     }
 
     // Adds user input of recycling records
     public Recycling addRecycling(String name,
                                   String email,
                                   String recycleType,
-                                  String location,
+                                  String location, String randomTip,
                                   double quantity) {
 
         recycleType = recycleType.toLowerCase();
@@ -42,8 +46,9 @@ public class RecyclingService {
 
         double pricePerUnit = recyclePrices.get(recycleType);
         double totalPrice = pricePerUnit * quantity;
+        randomTip = tips.getRandomTip(recycleType);
 
-        Recycling record = new Recycling(name, email, recycleType, location, quantity, totalPrice);
+        Recycling record = new Recycling(name, email, recycleType, location, randomTip, quantity, totalPrice);
         records.add(record);
 
         return record;
