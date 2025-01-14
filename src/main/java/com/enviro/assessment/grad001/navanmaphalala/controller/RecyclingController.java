@@ -1,10 +1,9 @@
 package com.enviro.assessment.grad001.navanmaphalala.controller;
 
 import com.enviro.assessment.grad001.navanmaphalala.model.User;
-import com.enviro.assessment.grad001.navanmaphalala.model.Recylcing;
+import com.enviro.assessment.grad001.navanmaphalala.model.Recycling;
 import com.enviro.assessment.grad001.navanmaphalala.service.RecyclingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class RecyclingController {
     }
 
     @PostMapping("/add")
-    public Recylcing addRecyclingRecord(@RequestBody RecycleRequest request){
+    public Recycling addRecyclingRecord(@RequestBody RecycleRequest request){
         return recyclingService.addRecord(
                 request.getName(),
                 request.getEmail(),
@@ -32,7 +31,7 @@ public class RecyclingController {
     }
 
     @GetMapping
-    public List<Recylcing> getAllRecyclingRecords() {
+    public List<Recycling> getAllRecyclingRecords() {
         return null;
     }
 

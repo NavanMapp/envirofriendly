@@ -1,6 +1,6 @@
 package com.enviro.assessment.grad001.navanmaphalala.service;
 
-import com.enviro.assessment.grad001.navanmaphalala.model.Recylcing;
+import com.enviro.assessment.grad001.navanmaphalala.model.Recycling;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class RecyclingService {
     *  instead of a query DB setup.
      */
 
-    private final List<Recylcing> records = new ArrayList<>();
+    private final List<Recycling> records = new ArrayList<>();
 
     // get price of single waste type recycled
     private double getPricePerType(String recycleType) {
@@ -34,23 +34,23 @@ public class RecyclingService {
 
     }
 
-    public Recylcing addRecycling(String name, String email, String recycleType, double quantity) {
+    public Recycling addRecycling(String name, String email, String recycleType, double quantity) {
         double price = getPricePerType(recycleType);
         double totalPrice = quantity * price;
 
-        Recylcing record = new Recylcing(userName, email, type, price, totalPrice);
+        Recycling record = new Recycling(1L, "navan","navan@email.com", "copper",
+                "Newcastle", 20, 5.0);
         records.add(record);
         return record;
     }
 
     public List<Recycling> getAllRecords() {
-//        return new ArrayList<>(records);
-        return new ArrayList<>();
+        return new ArrayList<>(records);
     }
 
-    public Recylcing getRecycling(Long id) {
+    public Recycling getRecycling(Long id) {
         return records.stream()
-                .filter(record -> records)
+                .filter(record -> record.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("The record you're looking for is not found: " + id));
     }

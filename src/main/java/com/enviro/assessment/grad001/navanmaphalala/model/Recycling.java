@@ -1,24 +1,23 @@
 package com.enviro.assessment.grad001.navanmaphalala.model;
 
-import lombok.Data;
+public class Recycling {
 
-@Data
-public class Recylcing {
+    private static long idCounter = 1;
 
-    private Long id;
+    private long id;
     private String userName;
     private String email;
     private String type;
     private String location;
-    private Integer quantity;
-    private Double price;
+    private int quantity;
+    private double price;
 
-    public Recylcing(Long id, String userName,
+    public Recycling(Long id, String userName,
                      String email, String type,
                      String location, Integer quantity,
                      Double price)
     {
-        this.id = id;
+        this.id = idCounter++;
         this.userName = userName;
         this.email = email;
         this.type = type;
@@ -47,7 +46,7 @@ public class Recylcing {
     public void setPrice(Double price) { this.price = price; }
     public void setType(String type) { this.type = type; }
     public void setPrice(double price) {
-        this.price = Recylcing.this.price;
+        this.price = Recycling.this.price;
     }
 
 
