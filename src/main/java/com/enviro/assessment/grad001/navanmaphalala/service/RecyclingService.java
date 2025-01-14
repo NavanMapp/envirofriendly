@@ -4,57 +4,82 @@ import com.enviro.assessment.grad001.navanmaphalala.model.Recycling;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class RecyclingService {
 
     /* This class will act as my repository as I am using a H2 database
-    *  instead of a query DB setup.
+    ** instead of a query DB setup.
      */
 
     private final List<Recycling> records = new ArrayList<>();
+    private final HashMap<String, Double> recyclePrices = new HashMap<>();
 
-    // get price of single waste type recycled
-    private double getPricePerType(String recycleType) {
-        switch (recycleType.toLowerCase()) {
-            case "Copper":
-                return 2.5;
-            case "Glass":
-                return 1.8;
-            case "Metal":
-                return 3.2;
-            case "Steel":
-                return 4.0;
-            case "Plastic":
-                return 0.8;
-            default:
-                throw new IllegalArgumentException("Invalid recycle type: " + recycleType);
-        }
-
+    /* HashMap to assist with material types being recycled and their prices for calculating
+    ** recycle waste per kg a user takes to recycling dump site
+     */
+    public RecyclingService() {
+        recyclePrices.put("copper", 2.5);
+        recyclePrices.put("glass", 1.7);
+        recyclePrices.put("metal", 1.2);
+        recyclePrices.put("steel", 3.0);
+        recyclePrices.put("tin", 0.7);
     }
 
-    public Recycling addRecycling(String name, String email, String recycleType, double quantity) {
-        double price = getPricePerType(recycleType);
-        double totalPrice = quantity * price;
+    // Adds user input of recycling records
+    public Recycling addRecycling(String name,
+                                  String email,
+                                  String recycleType,
+                                  String location,
+                                  double quantity) {
 
-        Recycling record = new Recycling(1L, "navan","navan@email.com", "copper",
-                "Newcastle", 20, 5.0);
+        recycleType = recycleType.toLowerCase();
+        if (!recyclePrices.containsKey(recycleType)) {
+            throw new IllegalArgumentException("Recycling type " + recycleType + " not supported");
+        }
+
+        double pricePerUnit = recyclePrices.get(recycleType);
+        double totalPrice = pricePerUnit * quantity;
+
+        Recycling record = new Recycling(name, email, recycleType, location, quantity, totalPrice);
         records.add(record);
+
         return record;
     }
 
-    public List<Recycling> getAllRecords() {
+    // Gets all recycling data from records stored
+    public List<Recycling> getAllRecyclings() {
         return new ArrayList<>(records);
     }
 
-    public Recycling getRecycling(Long id) {
-        return records.stream()
-                .filter(record -> record.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("The record you're looking for is not found: " + id));
+    // Filters out a single material or type and displays it creating categories for waste produce
+    public List<Recycling> getRecyclingType(String recycleType) {
+
+        recycleType = recycleType.toLowerCase();
+        if (!recyclePrices.containsKey(recycleType)) {
+            throw new IllegalArgumentException("Recycling type " + recycleType + " not found");
+        }
+
+        List<Recycling> filterRecyclings = new ArrayList<>();
+        for (Recycling record : records) {
+            if (record.getType().equalsIgnoreCase(recycleType)) {
+                filterRecyclings.add(record);
+            }
+        }
+        return filterRecyclings;
     }
 
+    // get price of single/specific recycle waste
+    public double getPricePerType(String recycleType) {
+        recycleType = recycleType.toLowerCase();
+        return recyclePrices.getOrDefault(recycleType,0.0);
+    }
 
+    // Change or add price for recycling type/material
+    public void setRecyclePrices(String recycleType, double price) {
+        recyclePrices.put(recycleType.toLowerCase(), price);
+    }
 
 }

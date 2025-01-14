@@ -21,41 +21,52 @@ public class RecyclingController {
 
     @PostMapping("/add")
     public Recycling addRecyclingRecord(@RequestBody RecycleRequest request){
-        return recyclingService.addRecord(
+        return recyclingService.addRecycling(
                 request.getName(),
                 request.getEmail(),
                 request.getType(),
-                request.getQuantity(),
-                request.getLocation()
+                request.getLocation(),
+                request.getQuantity()
         );
     }
 
-    @GetMapping
+    @GetMapping("/records")
     public List<Recycling> getAllRecyclingRecords() {
-        return null;
+        return recyclingService.getAllRecyclings();
+    }
+
+    @GetMapping("/records/{type}")
+    public List<Recycling> getAllRecyclingRecordsCategories(@PathVariable String recyclingType) {
+        return recyclingService.getRecyclingType(recyclingType);
+    }
+
+    @GetMapping("/price/")
+    public double getPriceForType(@RequestParam String type, @RequestParam double price) {
+        recyclingService.getPricePerType(type);
     }
 
     public static class RecycleRequest {
         private String name;
         private String email;
         private String type;
-        private double quantity;
         private String location;
+        private double quantity;
+
 
         // Getters for user input
         public String getName() { return name; }
         public String getEmail() { return email; }
         public String getType() { return type; }
-        public double getQuantity() { return quantity; }
         public String getLocation() { return location; }
+        public double getQuantity() { return quantity; }
 
         // Setters for user input
 
         public void setName(String name) { this.name = name; }
         public void setEmail(String email) { this.email = email; }
         public void setType(String type) { this.type = type; }
-        public void setQuantity(double quantity) { this.quantity = quantity; }
         public void setLocation(String location) { this.location = location; }
+        public void setQuantity(double quantity) { this.quantity = quantity; }
     }
 
 }

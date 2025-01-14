@@ -5,20 +5,20 @@ public class Recycling {
     private static long idCounter = 1;
 
     private long id;
-    private String userName;
+    private String name;
     private String email;
     private String type;
     private String location;
-    private int quantity;
+    private double quantity;
     private double price;
 
-    public Recycling(Long id, String userName,
+    public Recycling(String name,
                      String email, String type,
-                     String location, Integer quantity,
-                     Double price)
+                     String location, double quantity,
+                     double price)
     {
         this.id = idCounter++;
-        this.userName = userName;
+        this.name = name;
         this.email = email;
         this.type = type;
         this.location = location;
@@ -31,7 +31,7 @@ public class Recycling {
         return price;
     }
     public Long getId() { return id; }
-    public String getUserName() { return userName; }
+    public String getUserName() { return name; }
     public String getEmail() { return email; }
     public String getType() { return type; }
     public String getLocation() { return location; }
@@ -39,7 +39,7 @@ public class Recycling {
 
     // Setters
     public void setId(Long id) { this.id = id; }
-    public void setUserName(String userName) { this.userName = userName; }
+    public void setUserName(String name) { this.name = name; }
     public void setEmail(String email) { this.email = email; }
     public void setLocation(String location) { this.location = location; }
     public void setQuantity(Integer quantity) { this.quantity = quantity; }
