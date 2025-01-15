@@ -63,7 +63,6 @@ public class RecyclingController {
         public double getQuantity() { return quantity; }
 
         // Setters for user input
-
         public void setName(String name) { this.name = name; }
         public void setEmail(String email) { this.email = email; }
         public void setType(String type) { this.type = type; }
