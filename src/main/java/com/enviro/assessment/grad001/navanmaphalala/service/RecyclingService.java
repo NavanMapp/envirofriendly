@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RecyclingService {
@@ -20,7 +21,8 @@ public class RecyclingService {
     private final Tips tips;
 
     /* HashMap to assist with material types being recycled and their prices for calculating
-    ** recycle waste per kg a user takes to recycling dump site
+    ** recycle waste per kg a user takes to recycling dump site. Which encourages communities
+    *  to recycle more as there is an incentive to doing so.
      */
     public RecyclingService() {
         recyclePrices.put("copper", 2.5);
@@ -32,7 +34,9 @@ public class RecyclingService {
         this.tips = new Tips();
     }
 
-    // Adds user input of recycling records
+//    Adds user input of recycling records.
+//    the method takes in user entries, calculates and stores is in a string List
+//    variable called records.
     public Recycling addRecycling(String name,
                                   String email,
                                   String recycleType,
@@ -59,21 +63,46 @@ public class RecyclingService {
         return new ArrayList<>(records);
     }
 
+    public Recycling getRecyclingId(int id) {
+        return records.stream()
+                .filter(records -> records.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
     // Filters out a single material or type and displays it creating categories for waste produce
     public List<Recycling> getRecyclingType(String recycleType) {
+        return records.stream()
+                .filter(records -> records.getType().equalsIgnoreCase(recycleType))
+                .collect(Collectors.toList());
+    }
 
-        recycleType = recycleType.toLowerCase();
-        if (!recyclePrices.containsKey(recycleType)) {
-            throw new IllegalArgumentException("Recycling type " + recycleType + " not found");
-        }
+    public boolean updateRecycling(int id, String name, String email, String type,
+                                   String location, String randomTip, double quantity) {
+        Recycling record = records.get(id);
 
-        List<Recycling> filterRecyclings = new ArrayList<>();
-        for (Recycling record : records) {
-            if (record.getType().equalsIgnoreCase(recycleType)) {
-                filterRecyclings.add(record);
+        if(record != null) {
+            if (!recyclePrices.containsKey(type)) {
+                throw new IllegalArgumentException("Recycling type " + type + " invalid");
             }
+            double totalCost = recyclePrices.get(type) * quantity;
+
+            record.setName(name);
+            record.setEmail(email);
+            record.setType(type);
+            record.setLocation(location);
+
+            if (randomTip != null) {
+                record.setTip(randomTip);
+            }
+            record.setQuantity(quantity);
+            return true;
         }
-        return filterRecyclings;
+        return false;
+    }
+
+    public boolean deleteRecycling(int id) {
+        return records.removeIf(records -> records.getId() == id);
     }
 
     // get price of single/specific recycle waste
