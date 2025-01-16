@@ -64,7 +64,7 @@ function Recycle() {
           onChange={(e) => handleChange(e)}>
         </input>
 
-        <button onClick={(e) => handleClick(e)}></button>
+        <button className='submit' onClick={(e) => handleClick(e)}></button>
       </section>
     </div>
   )
