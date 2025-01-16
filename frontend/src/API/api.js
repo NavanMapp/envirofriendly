@@ -1,5 +1,10 @@
 import axios from 'axios';
 
+/** 
+ * API middleware, implementing REST endpoints
+ * to enable communication between the frontend and backend
+ **/
+
 const API_BASE_URL = 'http://localhost:8080';
 
 export const createAPIEndpoint = (endpoint) => {
