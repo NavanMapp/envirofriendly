@@ -51,21 +51,30 @@ public class RecyclingController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateRecyclingRecord(@PathVariable int id,
-                                                        @RequestParam String name,
-                                                        @RequestParam String email,
-                                                        @RequestParam String type,
-                                                        @RequestParam String location,
-                                                        @RequestParam String tip,
-                                                        @RequestParam double quantity
+//                                                        @RequestParam String name,
+//                                                        @RequestParam String email,
+//                                                        @RequestParam String type,
+//                                                        @RequestParam String location,
+//                                                        @RequestParam(required = false) String tip,
+//                                                        @RequestParam double quantity
+                                                        @RequestBody RecyclingRequest request
     ) {
         try{
-            boolean record = recyclingService.updateRecycling(id, name, email, type, location, tip, quantity);
+            boolean record = recyclingService.updateRecycling(
+                    request.getId(),
+                    request.getName(),
+                    request.getEmail(),
+                    request.getType(),
+                    request.getLocation(),
+                    request.tip,
+                    request.getQuantity()
+            );
             if (record) {
                 return ResponseEntity.ok("Record updated successfully.");
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Record not found");
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body("Error "+ e.getMessage());
         }
 
     }
