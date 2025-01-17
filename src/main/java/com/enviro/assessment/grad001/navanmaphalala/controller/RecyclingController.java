@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/recycling")
 public class RecyclingController {
@@ -69,6 +71,7 @@ public class RecyclingController {
 
     }
 
+    // Method that Deletes a single entry, using the id
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteRecyclingRecord(@PathVariable int id) {
         boolean deleted = recyclingService.deleteRecycling(id);
@@ -78,16 +81,25 @@ public class RecyclingController {
         return ResponseEntity.notFound().build();
     }
 
+    // Filtering method that shows all the recycling types
     @GetMapping("/categories/{type}")
     public List<Recycling> getAllRecyclingRecordsCategories(@PathVariable String recyclingType) {
         return recyclingService.getRecyclingType(recyclingType);
     }
 
+    // Creates key sets on of the HashMap <String> to display in my frontend
+    @GetMapping("/types")
+    public Set<String> getType() {
+        return recyclingService.getKeyTypes().keySet();
+    }
+
+    // filters the price of waste produce added by user.
     @GetMapping("/price/")
     public double getPriceForType(@RequestParam String type, @RequestParam double price) {
         return recyclingService.getPricePerType(type);
     }
 
+    // works as my Data Transfer Object
     public static class RecyclingRequest {
         private int id;
         private String name;

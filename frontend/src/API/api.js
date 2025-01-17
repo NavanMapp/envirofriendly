@@ -5,6 +5,10 @@ import axios from 'axios';
  * to enable communication between the frontend and backend
  **/
 
+export const endpoints = {
+    recycling: 'recycling'
+}
+
 const API_BASE_URL = 'http://localhost:8080';
 
 export const createAPIEndpoint = (endpoint) => {

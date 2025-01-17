@@ -34,6 +34,10 @@ public class RecyclingService {
         this.tips = new Tips();
     }
 
+    public HashMap<String, Double> getKeyTypes() {
+        return recyclePrices;
+    }
+
 //    Adds user input of recycling records.
 //    the method takes in user entries, calculates and stores is in a string List
 //    variable called records.
