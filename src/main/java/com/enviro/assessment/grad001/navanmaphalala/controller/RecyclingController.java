@@ -15,7 +15,6 @@ public class RecyclingController {
 
     private final RecyclingService recyclingService;
 
-
     @Autowired
     public RecyclingController(RecyclingService recyclingService) {
         this.recyclingService = recyclingService;
@@ -50,29 +49,20 @@ public class RecyclingController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateRecyclingRecord(@PathVariable int id,
-//                                                        @RequestParam String name,
-//                                                        @RequestParam String email,
-//                                                        @RequestParam String type,
-//                                                        @RequestParam String location,
-//                                                        @RequestParam(required = false) String tip,
-//                                                        @RequestParam double quantity
+    public ResponseEntity<String> updateRecyclingRecord(@PathVariable("id") int id,
                                                         @RequestBody RecyclingRequest request
     ) {
         try{
-            boolean record = recyclingService.updateRecycling(
-                    request.getId(),
+            recyclingService.updateRecycling(
+                    id,
                     request.getName(),
                     request.getEmail(),
                     request.getType(),
                     request.getLocation(),
                     request.tip,
                     request.getQuantity()
-            );
-            if (record) {
-                return ResponseEntity.ok("Record updated successfully.");
-            }
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Record not found");
+                    );
+            return ResponseEntity.ok("Record updated successfully.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Error "+ e.getMessage());
         }

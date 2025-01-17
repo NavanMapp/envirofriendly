@@ -77,26 +77,25 @@ public class RecyclingService {
                 .collect(Collectors.toList());
     }
 
-    public boolean updateRecycling(int id, String name, String email, String type,
-                                   String location, String randomTip, double quantity) {
+    public boolean updateRecycling(int id,
+                                   String name, String email, String type,
+                                   String location, String randomTip, double quantity
+    ) {
 
-        for (Recycling record : records) {
-            if (record.getId() == id) {
-                if (!recyclePrices.containsKey(type)) {
-                    throw new IllegalArgumentException("Recycling type " + type + " invalid");
-                }
-                double totalCost = recyclePrices.get(type) * quantity;
-                record.setName(name);
-                record.setEmail(email);
-                record.setType(type);
-                record.setLocation(location);
-
-                if (randomTip != null) {
-                    record.setTip(randomTip);
-                }
-                record.setQuantity(quantity);
-                return true;
+        Recycling recycling = getRecyclingId(id);
+        if (recycling != null) {
+            double totalPrice = recyclePrices.get(recycling.getType()) * quantity;
+            recycling.setId(id);
+            recycling.setName(name);
+            recycling.setEmail(email);
+            recycling.setType(type);
+            recycling.setLocation(location);
+            if (randomTip != null) {
+                recycling.setTip(randomTip);
             }
+            recycling.setQuantity(quantity);
+            recycling.setPrice(totalPrice);
+            records.add(recycling);
         }
         return false;
     }
