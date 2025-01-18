@@ -5,7 +5,7 @@ import java.util.*;
 public class Tips {
 
     // A MultiValue HashMapp list of tips suggested, based on what type of recycling waste the user chooses
-    private Map<String, List<String>> tip = new HashMap<>();
+    private HashMap<String, List<String>> tip = new HashMap<>();
 
     public Tips() {
         tip.put("copper", Arrays.asList(
@@ -66,6 +66,11 @@ public class Tips {
                 "Repurpose Creatively: Use tin cans as storage containers, planters, " +
                         "or craft materials before recycling."
         ));
+    }
+
+    public String getTipList(String type) {
+        List<String> tips = tip.get(type.toLowerCase());
+        return tips.isEmpty() ? "NO Tips to display" : tips.get(1);
     }
 
     public String getRandomTip(String recycleType) {

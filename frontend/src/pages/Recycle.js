@@ -13,9 +13,9 @@ function Recycle() {
 
   return (
     <div>
-    <Navbar />
-    <Tips />
-    <UserEntry />
+      <Navbar />
+      <Tips />
+      <UserEntry />
     </div>
   )
 }

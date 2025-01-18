@@ -1,9 +1,9 @@
 package com.enviro.assessment.grad001.navanmaphalala.controller;
 
 import com.enviro.assessment.grad001.navanmaphalala.model.Recycling;
+import com.enviro.assessment.grad001.navanmaphalala.model.Tips;
 import com.enviro.assessment.grad001.navanmaphalala.service.RecyclingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +22,8 @@ public class RecyclingController {
         this.recyclingService = recyclingService;
     }
 
+
+    // Method that adds a user's entry
     @PostMapping("/add")
     public Recycling addRecyclingRecord( @RequestBody RecyclingRequest request) {
         return recyclingService.addRecycling(
@@ -34,12 +36,14 @@ public class RecyclingController {
         );
     };
 
+    // Gets and displays all records
     @GetMapping("/records")
     public ResponseEntity<List<Recycling>> getAllRecyclingRecords() {
         List<Recycling> records = recyclingService.getAllRecyclings();
         return ResponseEntity.ok(records);
     }
 
+    // Gets a record using its id
     @GetMapping("/records/{id}")
     public ResponseEntity<Recycling> getRecyclingRecordById(@PathVariable int id) {
         Recycling record = recyclingService.getRecyclingId(id);
@@ -50,6 +54,38 @@ public class RecyclingController {
         return ResponseEntity.notFound().build();
     }
 
+    // Filtering method that shows the recycling types selected
+    @GetMapping("/category/{type}")
+    public ResponseEntity<List<Recycling>> getByCategory (@PathVariable String type) {
+        List<Recycling> record = recyclingService.getRecyclingType(type);
+        if(record.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(record);
+    }
+
+    // Creates key sets on of the HashMap <String> to display in my frontend
+    @GetMapping("/types")
+    public Set<String> getType() {
+        return recyclingService.getKeyTypes().keySet();
+    }
+
+    /** NOT WORKING YET
+     * Filter and display tips per category chosen by user
+     * */
+    @GetMapping("/tips")
+    public List<Tips> getTips() {
+        List<Tips> tips = recyclingService.getTipsList();
+        return tips;
+    }
+
+    // filters the price of waste produce added by user.
+    @GetMapping("/price/")
+    public double getPriceForType(@RequestParam String type, @RequestParam double price) {
+        return recyclingService.getPricePerType(type);
+    }
+
+    // Method that updates a specific record using its id.
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateRecyclingRecord(@PathVariable("id") int id,
                                                         @RequestBody RecyclingRequest request
@@ -79,24 +115,6 @@ public class RecyclingController {
             return ResponseEntity.ok("Record has been deleted successfully");
         }
         return ResponseEntity.notFound().build();
-    }
-
-    // Filtering method that shows all the recycling types
-    @GetMapping("/categories/{type}")
-    public List<Recycling> getAllRecyclingRecordsCategories(@PathVariable String recyclingType) {
-        return recyclingService.getRecyclingType(recyclingType);
-    }
-
-    // Creates key sets on of the HashMap <String> to display in my frontend
-    @GetMapping("/types")
-    public Set<String> getType() {
-        return recyclingService.getKeyTypes().keySet();
-    }
-
-    // filters the price of waste produce added by user.
-    @GetMapping("/price/")
-    public double getPriceForType(@RequestParam String type, @RequestParam double price) {
-        return recyclingService.getPricePerType(type);
     }
 
     // works as my Data Transfer Object

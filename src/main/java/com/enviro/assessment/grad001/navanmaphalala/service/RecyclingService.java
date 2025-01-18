@@ -5,6 +5,7 @@ import com.enviro.assessment.grad001.navanmaphalala.model.Tips;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +39,10 @@ public class RecyclingService {
         return recyclePrices;
     }
 
+    public List<Tips> getTipsList() {
+        return new ArrayList<>((Collection) tips);
+    }
+
 //    Adds user input of recycling records.
 //    the method takes in user entries, calculates and stores is in a string List
 //    variable called records.
@@ -67,6 +72,7 @@ public class RecyclingService {
         return new ArrayList<>(records);
     }
 
+    // Service method that filters records using their id
     public Recycling getRecyclingId(int id) {
         return records.stream()
                 .filter(records -> records.getId() == id)
@@ -81,6 +87,13 @@ public class RecyclingService {
                 .collect(Collectors.toList());
     }
 
+    // get price of single/specific recycle waste
+    public double getPricePerType(String recycleType) {
+        recycleType = recycleType.toLowerCase();
+        return recyclePrices.getOrDefault(recycleType,0.0);
+    }
+
+    // Update an existing record
     public boolean updateRecycling(int id,
                                    String name, String email, String type,
                                    String location, String randomTip, double quantity
@@ -104,14 +117,9 @@ public class RecyclingService {
         return false;
     }
 
+    // Deletes a specific record using its id
     public boolean deleteRecycling(int id) {
         return records.removeIf(records -> records.getId() == id);
-    }
-
-    // get price of single/specific recycle waste
-    public double getPricePerType(String recycleType) {
-        recycleType = recycleType.toLowerCase();
-        return recyclePrices.getOrDefault(recycleType,0.0);
     }
 
     // Change or add price for recycling type/material

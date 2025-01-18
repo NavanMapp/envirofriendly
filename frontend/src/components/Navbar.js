@@ -9,22 +9,22 @@ function Navbar() {
         <div className="navbar navbar-light">
           <ul className='navbar-nav'>
             <li className='nav-item active'>
-              <a className='nav-link' href="#home" onClick={() => { }} >
+              <a className='nav-link' href="/" onClick={() => { }} >
                 <span className="sr-only">HOME</span>
               </a>
             </li>
             <li className='nav-item active'>
-              <a className='nav-link' href="#about" onClick={() => { }} >
-                <span className="label">ABOUT US</span>
+              <a className='nav-link' href="/dashboard" onClick={() => { }} >
+                <span className="label">LEADERBOARD</span>
               </a>
             </li>
             <li className='nav-item active'>
-              <a className='nav-link' href="#education" onClick={() => { }} >
+              <a className='nav-link' href="/education" onClick={() => { }} >
                 <span className="label">EDUCATIONAL TIPS</span>
               </a>
             </li>
             <li className='nav-item active'>
-              <a className='nav-link' href="#contact" onClick={() => { }} >
+              <a className='nav-link' href="/contact" onClick={() => { }} >
                 <span className="label">CONTACT US</span>
               </a>
             </li>

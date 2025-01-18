@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { createAPIEndpoint } from '../API/api';
 
 /**
  * 
@@ -14,8 +15,9 @@ function Dashboard() {
     const [selectOption, setSelectedOption] = useState('');
 
     function handleChange(e) {
-        setSelectedOption(e.target.value);
+        e.preventDefault();
     }
+
     return (
         <div>
             <div className='select-category'>
