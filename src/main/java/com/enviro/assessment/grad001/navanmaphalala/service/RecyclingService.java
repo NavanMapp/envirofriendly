@@ -39,10 +39,6 @@ public class RecyclingService {
         return recyclePrices;
     }
 
-    public List<Tips> getTipsList() {
-        return new ArrayList<>((Collection) tips);
-    }
-
 //    Adds user input of recycling records.
 //    the method takes in user entries, calculates and stores is in a string List
 //    variable called records.
@@ -112,7 +108,6 @@ public class RecyclingService {
             }
             recycling.setQuantity(quantity);
             recycling.setPrice(totalPrice);
-            records.add(recycling);
         }
         return false;
     }

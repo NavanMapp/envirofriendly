@@ -22,7 +22,6 @@ public class RecyclingController {
         this.recyclingService = recyclingService;
     }
 
-
     // Method that adds a user's entry
     @PostMapping("/add")
     public Recycling addRecyclingRecord( @RequestBody RecyclingRequest request) {
@@ -69,21 +68,6 @@ public class RecyclingController {
     @GetMapping("/types")
     public Set<String> getType() {
         return recyclingService.getKeyTypes().keySet();
-    }
-
-    /** NOT WORKING YET
-     * Filter and display tips per category chosen by user
-     * */
-    @GetMapping("/tips")
-    public List<Tips> getTips() {
-        List<Tips> tips = recyclingService.getTipsList();
-        return tips;
-    }
-
-    // filters the price of waste produce added by user.
-    @GetMapping("/price/")
-    public double getPriceForType(@RequestParam String type, @RequestParam double price) {
-        return recyclingService.getPricePerType(type);
     }
 
     // Method that updates a specific record using its id.

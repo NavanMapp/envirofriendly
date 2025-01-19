@@ -68,9 +68,12 @@ public class Tips {
         ));
     }
 
-    public String getTipList(String type) {
-        List<String> tips = tip.get(type.toLowerCase());
-        return tips.isEmpty() ? "NO Tips to display" : tips.get(1);
+    public HashMap<String, List<String>> getTips() {
+        return tip;
+    }
+
+    public List<String> getTipsByType(String type) {
+        return tip.get(type);
     }
 
     public String getRandomTip(String recycleType) {
