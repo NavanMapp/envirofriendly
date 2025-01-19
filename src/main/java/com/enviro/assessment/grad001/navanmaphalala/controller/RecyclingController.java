@@ -34,7 +34,7 @@ public class RecyclingController {
                 request.tip,
                 request.getQuantity()
         );
-    };
+    }
 
     // Gets and displays all records
     @GetMapping("/records")
@@ -55,6 +55,7 @@ public class RecyclingController {
     }
 
     // Filtering method that shows the recycling types selected
+    @CrossOrigin
     @GetMapping("/category/{type}")
     public ResponseEntity<List<Recycling>> getByCategory (@PathVariable String type) {
         List<Recycling> record = recyclingService.getRecyclingType(type);

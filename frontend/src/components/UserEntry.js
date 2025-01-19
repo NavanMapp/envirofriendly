@@ -46,12 +46,11 @@ function UserEntry() {
         createAPIEndpoint('add')
             .post(addRecord)
             .then((response) => {
-                setSubmit("You have successfully added a recycle record, go view the dashboard for your entry reference");
-                console.log(response.data);
+                console.log("You have successfully added a recycle record, go view the dashboard for your entry reference", response.data);
             }).catch((error) => {
-                setSubmit("Failed to add recycle record. Please try again.");
+                setError("Failed to add recycle record. Please try again.");
                 console.error("Error when adding recycle record: ", error);
-            })           
+            });           
     }
 
     return (

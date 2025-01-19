@@ -11,8 +11,8 @@ export const createAPIEndpoint = (endpoint) => {
     let url = `${API_BASE_URL}/api/recycling/${endpoint}`;
 
     return {
-        getAllRecords: () => axios.get(`${url}/records`),
-        getByType:(type) => axios.get(url, type),
+        getAllRecords: () => axios.get(`${url}`),
+        getByType:(type) => axios.get(`${url}${type}`),
         fetchById: (id) => axios.get(`${url}${id}`),
         post: (newRecord) => axios.post(url, newRecord),
         update: (id, updateRecord) => axios.put(`${url}${id}`, updateRecord),
