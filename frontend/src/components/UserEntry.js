@@ -8,16 +8,16 @@ function UserEntry() {
     const [selectOption, setSelectOption] = useState('');
     const [setSubmit] = useState([]);
     const [name, setName] = useState([]);
-    const [email, setEmail] = useState("");
-    const [amount, setAmount] = useState("");
-    const [location, setLocation] = useState("");
+    const [email, setEmail] = useState('');
+    const [amount, setAmount] = useState('');
+    const [location, setLocation] = useState('');
     const [error, setError] = useState({});
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/recycling/types")
+        fetch('http://localhost:8080/api/recycling/types')
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error("network response not ok");
+                    throw new Error('network response not ok');
                 }
                 return response.json();
             })
@@ -25,10 +25,10 @@ function UserEntry() {
                 if (Array.isArray(data)) {
                     setItem(data);
                 } else {
-                    console.error("API did not return an array", data)
+                    console.error('API did not return an array', data)
                 }
             })
-            .catch((error) => console.error("Error when fetching from backend", error))
+            .catch((error) => alert('Error when fetching from backend', error))
 
     }, [])
 
@@ -46,48 +46,69 @@ function UserEntry() {
         createAPIEndpoint('add')
             .post(addRecord)
             .then((response) => {
-                console.log("You have successfully added a recycle record, go view the dashboard for your entry reference", response.data);
+                alert('You have successfully added a recycle record, go view the dashboard for your entry reference', response.data);
             }).catch((error) => {
-                setError("Failed to add recycle record. Please try again.");
-                console.error("Error when adding recycle record: ", error);
-            });           
+                setError('Failed to add recycle record. Please try again.');
+                console.error('Error when adding recycle record: ', error);
+            });
     }
 
     return (
-        <div className='container'>
-            <form className='input-group' onSubmit={handleSubmit}>
-                <label htmlFor='name'>Name</label>
-                <input type='text' placeholder='Enter Your Name' name='name' required
-                    onChange={(e) => setName(e.target.value)} />
+<div className='container'>
+  <h3 className='text-center mb-4'>Submit Your Information</h3>
+  <form className='input-group mb-5' onSubmit={handleSubmit}>
+    <div className='row g-3'>
 
-                <label htmlFor='email'>Email</label>
-                <input type='text' placeholder='Enter Your Email' name='email' required
-                    onChange={(e) => setEmail(e.target.value)} />
-
-                <label htmlFor='type'>Choose Type to Recycle:</label>
-                <select value={selectOption} 
-                    onChange={(e) => setSelectOption(e.target.value)}>
-                    <option value="">--Select a type--</option>
-                    {item.map((key) => (
-                        <option key={key} value={key}>
-                            {key}
-                        </option>
-                    ))}
-                </select>
-
-                <label htmlFor='quantity'>Quantity</label>
-                <input type='number' step='0.01' placeholder='Quantity'
-                    name='quantity' required
-                    onChange={(e) => setAmount(e.target.value)} />
-
-                <label htmlFor='location'>Location</label>
-                <input type='text' placeholder='Lets Find You Closest Recycle Site'
-                    name='location' required
-                    onChange={(e) => setLocation(e.target.value)} />
-
-                <button type='submit' className='btn btn-outline-success'>Submit</button>
-            </form>
+      <div className='col-md-6'>
+        <div className='row g-3 align-items-center'>
+          <div className='col-md-6'>
+            <label htmlFor='name' className='form-label'>Name</label>
+            <input type='text' placeholder='Enter Your Name' name='name' required
+              onChange={(e) => setName(e.target.value)} className='form-control' />
+          </div>
+          <div className='col-md-6'>
+            <label htmlFor='email' className='form-label'>Email</label>
+            <input type='text' placeholder='Enter Your Email' name='email' required
+              onChange={(e) => setEmail(e.target.value)} className='form-control' />
+          </div>
         </div>
+      </div>
+
+      <div className='col-md-6'>
+        <div className='row g-3 align-items-center'>
+          <div className='col-md-6'>
+            <label htmlFor='type' className='form-label'>Choose Type to Recycle:</label>
+            <select value={selectOption}
+              onChange={(e) => setSelectOption(e.target.value)} className='form-control'>
+              <option value=''>--Select a type--</option>
+              {item.map((key) => (
+                <option key={key} value={key}>
+                  {key}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className='col-md-6'>
+            <label htmlFor='quantity' className='form-label'>Quantity</label>
+            <input type='number' step='0.01' placeholder='Quantity' name='quantity' required
+              onChange={(e) => setAmount(e.target.value)} className='form-control' />
+          </div>
+        </div>
+      </div>
+
+      <div className='col-md-3'>
+        <label htmlFor='location' className='form-label'>Location</label>
+        <input type='text' placeholder='Lets Find You Closest Recycle Site' name='location' required
+          onChange={(e) => setLocation(e.target.value)} className='form-control' />
+      </div>
+
+      <div className='col-md-12 mt-3'>
+        <button type='submit' className='btn btn-success w-100'>Submit</button>
+      </div>
+    </div>
+  </form>
+</div>
+
     )
 
 }

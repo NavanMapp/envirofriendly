@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import Tips from '../components/Tips'
 import UserEntry from '../components/UserEntry'
+import Footer from '../components/Footer'
 
 /**
  * 
@@ -16,6 +17,7 @@ function Recycle() {
       <Navbar />
       <Tips />
       <UserEntry />
+      <Footer />
     </div>
   )
 }

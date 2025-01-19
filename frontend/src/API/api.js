@@ -16,6 +16,8 @@ export const createAPIEndpoint = (endpoint) => {
         fetchById: (id) => axios.get(`${url}${id}`),
         post: (newRecord) => axios.post(url, newRecord),
         update: (id, updateRecord) => axios.put(`${url}${id}`, updateRecord),
-        delete: (id) => axios.delete(`${url}${id}`)
+        delete: (id) => axios.delete(`${url}${id}`),
+        getTips: () => axios.get(`${API_BASE_URL}/api/tips`),
+        getTipsByType: (type) => axios.get(`${API_BASE_URL}/api/tips/${type}`)
     }
 }

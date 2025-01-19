@@ -30,10 +30,10 @@ export default function Leaderboard() {
                 if (Array.isArray(data)) {
                     setItem(data);
                 } else {
-                    console.error("API did not return an array", data)
+                    alert("API did not return an array", data)
                 }
             })
-            .catch((error) => console.error("Error when fetching from backend", error))
+            .catch((error) => alert("Error when fetching from backend", error))
 
     }, [])
 
@@ -47,11 +47,10 @@ export default function Leaderboard() {
         .getAllRecords()
         .then((response) => {
             setRecord(response.data);
-            console.log(response.data);
         })
         .catch((error) => {
             setError("Records cannot be found.");
-            console.error("Records not found: ", error);
+            alert("Records not found: ", error);
         })
         .finally(() => setLoading(false));
     }
@@ -62,7 +61,7 @@ export default function Leaderboard() {
         setSelectedOption(type);
         
         setLoading(true);
-        setError("");
+        setError('');
 
         createAPIEndpoint('category/')
             .getByType(type)
@@ -70,30 +69,30 @@ export default function Leaderboard() {
                 setRecord(response.data);
                 console.log(response.data);
             }).catch((error) => {
-                setError("Records cannot be found. Please try again!");
-                console.error("Error when fetching the records: ", error);
+                setError('Records cannot be found. Please try again!');
+                console.error('Error when fetching the records: ', error);
             }).finally(() => setLoading(false));
     }
 
     const columnKeys = Object.keys(record[0] || {});
 
     return (
-        <div>
+        <div className='p-4'>
             <h2>Dashboard: Dynamic recycling table view</h2>
-            <div className='select-category'>
+            <div className='select-category p-2'>
                 <select value={selectOption} onChange={handleCategory}>
-                    <option value='' > *** Select an option ***</option>
+                    <option value='' > *** Select To Sort Type ***</option>
                     {item.map((key) => (
                         <option key={key} value={key} >{key}</option>
                     ))}
                 </select>
                 {selectOption && <p>Selected: {selectOption}</p>}
             </div>
-            <button type="submit" onClick={handleViewAll} >All Records</button>
-            <div className='dashboard'>
+            <button type='submit' className='btn btn-success w-10' onClick={handleViewAll} >All Records</button>
+            <div className='dashboard p-4'>
                 {record.length > 0 && (
-                    <table border="1">
-                        <thead>
+                    <table className='table table-bordered custom-table' border='1'>
+                        <thead className='table-success'>
                             <tr>
                                 {columnKeys.map((key) => (
                                     <th key={key}>{key}</th>
