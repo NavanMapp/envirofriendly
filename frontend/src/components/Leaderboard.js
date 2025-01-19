@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { createAPIEndpoint } from '../API/api';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
+import { Alert } from 'bootstrap/dist/js/bootstrap.min.js';
 
 /**
  * 
@@ -17,6 +20,7 @@ export default function Leaderboard() {
     const [record, setRecord] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [ update, setUpdate ] = useState({});
 
     useEffect(() => {
         fetch("http://localhost:8080/api/recycling/types")
@@ -44,22 +48,22 @@ export default function Leaderboard() {
         setRecord([]);
 
         createAPIEndpoint('records')
-        .getAllRecords()
-        .then((response) => {
-            setRecord(response.data);
-        })
-        .catch((error) => {
-            setError("Records cannot be found.");
-            alert("Records not found: ", error);
-        })
-        .finally(() => setLoading(false));
+            .getAllRecords()
+            .then((response) => {
+                setRecord(response.data);
+            })
+            .catch((error) => {
+                setError("Records cannot be found.");
+                alert("Records not found: ", error);
+            })
+            .finally(() => setLoading(false));
     }
 
     function handleCategory(e) {
-        
+
         const type = e.target.value;
         setSelectedOption(type);
-        
+
         setLoading(true);
         setError('');
 
@@ -72,6 +76,71 @@ export default function Leaderboard() {
                 setError('Records cannot be found. Please try again!');
                 console.error('Error when fetching the records: ', error);
             }).finally(() => setLoading(false));
+    }
+
+    function handleDelete(id) {
+        createAPIEndpoint('delete/')
+            .delete(id)
+            .then(() => {
+                alert('record deleted successfully.')
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error('There was an issue when deleting this record.', error);
+                setError('There was an issue when deleting this record.', error)
+            })
+    }
+
+    function handleView(id) {
+
+        createAPIEndpoint('records/')
+            .getById(id)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Response Not OK');
+                }
+                console.log('Response: ', response);
+                return response.json()
+            }).then((data) => {
+                console.log('Data: ', data);
+                alert(data);
+                const body = document.querySelector('.modal-body');
+                body.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+
+                const modal = new window.bootstrap.Modal(document.getElementById('viewModal'));
+                modal.show();
+            }).catch((error) => {
+                setError("Error Viewing");
+            })
+    }
+
+    function handleUpdate() {
+        document.getElementById('updateField1').value = record.field1; // Example field
+
+        // Show the modal
+        const modal = new window.bootstrap.Modal(document.getElementById('updateModal'));
+        modal.show();
+    }
+
+    function handleEdit (id) {
+        const edit= record.find((record) => record.id === id);
+
+    }
+
+    function handleSubmitUpdate() {
+        const updates = {
+            field1: document.getElementById('name').value
+        }
+
+        createAPIEndpoint()
+            .update(updates)
+            .then(() => {
+                alert('Record updated successfully');
+            })
+            .catch((error) => {
+                console.error('There was an issue when updating this record.', error);
+                setError('There was an issue when updating this record.');
+            })
     }
 
     const columnKeys = Object.keys(record[0] || {});
@@ -97,6 +166,7 @@ export default function Leaderboard() {
                                 {columnKeys.map((key) => (
                                     <th key={key}>{key}</th>
                                 ))}
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -105,6 +175,26 @@ export default function Leaderboard() {
                                     {columnKeys.map((key) => (
                                         <td key={`${record.id}-${key}`}>{record[key]}</td>
                                     ))}
+                                    <td> {/* Action buttons */}
+                                        <button
+                                            className='btn btn-primary btn-sm me-2'
+                                            onClick={() => handleView(record.id)}
+                                        >
+                                            View
+                                        </button>
+                                        <button
+                                            className='btn btn-warning btn-sm me-2'
+                                            onClick={() => handleUpdate(record.id)}
+                                        >
+                                            Update
+                                        </button>
+                                        <button
+                                            className='btn btn-danger btn-sm'
+                                            onClick={() => handleDelete(record.id)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -113,6 +203,30 @@ export default function Leaderboard() {
                 {record.length === 0 && !loading && selectOption && (
                     <p>No records found for the selcted type</p>
                 )}
+
+                <table className="table table-bordered custom-table" border="1">
+                    <thead className="table-success">
+                        <tr>
+                            {columnKeys.map((key) => (
+                                <th key={key}>{key}</th>
+                            ))}
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {record.map((record) => (
+                            <tr key={record.id}>
+                                {columnKeys.map((key) => (
+                                    <td key={`${record.id}-${key}`}>{record[key]}</td>
+                                ))}
+                                <td>
+                                    <button className='btn btn-warning' onClick={() => handleEdit(record.id)}>Edit</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+
             </div>
         </div>
     )

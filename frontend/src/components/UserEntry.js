@@ -46,7 +46,9 @@ function UserEntry() {
         createAPIEndpoint('add')
             .post(addRecord)
             .then((response) => {
-                alert('You have successfully added a recycle record, go view the dashboard for your entry reference', response.data);
+                alert('You have successfully added a recycle record, go' 
+                  + 'view the dashboard for your entry reference', response.data);
+                window.location.reload();
             }).catch((error) => {
                 setError('Failed to add recycle record. Please try again.');
                 console.error('Error when adding recycle record: ', error);
@@ -55,7 +57,7 @@ function UserEntry() {
 
     return (
 <div className='container'>
-  <h3 className='text-center mb-4'>Submit Your Information</h3>
+  <h3 className='text-center mb-4'>Recycle for Cash Calculator</h3>
   <form className='input-group mb-5' onSubmit={handleSubmit}>
     <div className='row g-3'>
 
