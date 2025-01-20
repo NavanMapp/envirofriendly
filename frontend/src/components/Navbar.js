@@ -6,7 +6,7 @@ function Navbar() {
   return (
     <div className='nav justify-content-center'>
       <nav className='navbar navbar-expand-lg navbar-light bg-light '>
-        <div className="navbar navbar-light">
+        <div className='navbar navbar-light'>
           <ul className='navbar-nav'>
             <li className='nav-item active'>
               <a className='nav-link' href="/" onClick={() => { }} >
@@ -14,12 +14,12 @@ function Navbar() {
               </a>
             </li>
             <li className='nav-item active'>
-              <a className='nav-link' href="/dashboard" onClick={() => { }} >
+              <a className='nav-link' href='/dashboard' onClick={() => { }} >
                 <span className='label'>LEADERBOARD</span>
               </a>
             </li>
             <li className='nav-item active'>
-              <a className='nav-link' href="/education" onClick={() => { }} >
+              <a className='nav-link' href='/education' onClick={() => { }} >
                 <span className='label'>EDUCATIONAL TIPS</span>
               </a>
             </li>
