@@ -5,7 +5,7 @@ EnviroFriendly is an educational platform designed to promote recycling awarenes
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 - **Backend:** Java with Spring Boot
 - **Frontend:** JavaScript with ReactJS
 - **CSS Framework:** Bootstrap for responsive design
