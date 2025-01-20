@@ -2,34 +2,34 @@ import React, { useEffect, useState } from 'react'
 import { createAPIEndpoint } from '../API/api';
 
 function EduComponent() {
-    const [ tips, setTips ] = useState([]);
-    const [ error, setError ] = useState();
+    const [tips, setTips] = useState([]);
+    const [error, setError] = useState();
 
-useEffect(() =>{
-    setError('');
+    useEffect(() => {
+        setError('');
 
-    createAPIEndpoint()
-    .getTips()
-    .then((response) => {
-        console.log('response: ', response);
-        if (!response.ok) {
-            throw new Error("Network response not ok");
-        }
-        return response.json(); 
-    })
-    .then((data) => {
-        console.log('Data: ', data);
-        
-        if (Array.isArray(data)) {
-        setTips(data);
-        } else {
-            alert('API did not return the array required.')
-        }
-    }).catch((error) => {
-        console.error(error);
-        setError('There was an error fetching the tips. Please try again later.');
-    })
-},[])
+        createAPIEndpoint()
+            .getTips()
+            .then((response) => {
+                console.log('response: ', response);
+                if (!response.ok) {
+                    throw new Error("Network response not ok");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log('Data: ', data);
+
+                if (Array.isArray(data)) {
+                    setTips(data);
+                } else {
+                    alert('API did not return the array required.')
+                }
+            }).catch((error) => {
+                console.error(error);
+                setError('There was an error fetching the tips. Please try again later.');
+            })
+    }, [])
 
     const columnKeys = Object.keys(tips[0] || {});
 
@@ -43,8 +43,8 @@ useEffect(() =>{
 
             <div>
                 {tips.length > 0 ? (
-                    <table className="table table-bordered custom-table" border="1">
-                        <thead className="table-success">
+                    <table className='table table-bordered custom-table' border='1'>
+                        <thead className='table-success'>
                             <tr>
                                 {columnKeys.map((key) => (
                                     <th key={key}>{key}</th>

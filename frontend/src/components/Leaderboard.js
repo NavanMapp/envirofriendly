@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { createAPIEndpoint } from '../API/api';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
-import { Alert } from 'bootstrap/dist/js/bootstrap.min.js';
 
 /**
  * 
@@ -19,14 +18,15 @@ export default function Leaderboard() {
     const [item, setItem] = useState([]);
     const [record, setRecord] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
-    const [ update, setUpdate ] = useState({});
+    const [error, setError] = useState('');
+    const [edit, setEdit] = useState([]);
+    const [recordId, setRecrodId] = useState({});
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/recycling/types")
+        fetch('http://localhost:8080/api/recycling/types')
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error("network response not ok");
+                    throw new Error('network response not ok');
                 }
                 return response.json();
             })
@@ -34,18 +34,23 @@ export default function Leaderboard() {
                 if (Array.isArray(data)) {
                     setItem(data);
                 } else {
-                    alert("API did not return an array", data)
+                    alert('API did not return an array', data)
                 }
             })
-            .catch((error) => alert("Error when fetching from backend", error))
+            .catch((error) => alert('Error when fetching from backend', error))
 
     }, [])
 
     function handleViewAll(e) {
 
         setLoading(true);
-        setError("");
+        setError('');
         setRecord([]);
+
+        if(record.length === 0 && !loading && selectOption) {
+            alert('No records found.');
+            return;
+        }
 
         createAPIEndpoint('records')
             .getAllRecords()
@@ -53,7 +58,7 @@ export default function Leaderboard() {
                 setRecord(response.data);
             })
             .catch((error) => {
-                setError("Records cannot be found.");
+                setError('Records cannot be found.');
                 alert("Records not found: ", error);
             })
             .finally(() => setLoading(false));
@@ -63,6 +68,12 @@ export default function Leaderboard() {
 
         const type = e.target.value;
         setSelectedOption(type);
+
+        if(record.length === 0 && !loading && selectOption) {
+            alert('No records found.');
+            window.location.reload();
+            return;
+        }
 
         setLoading(true);
         setError('');
@@ -91,55 +102,37 @@ export default function Leaderboard() {
             })
     }
 
-    function handleView(id) {
 
-        createAPIEndpoint('records/')
-            .getById(id)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Response Not OK');
-                }
-                console.log('Response: ', response);
-                return response.json()
-            }).then((data) => {
-                console.log('Data: ', data);
-                alert(data);
-                const body = document.querySelector('.modal-body');
-                body.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+    function handleEdit(id) {
+        const edit = record.find((record) => record.id === id);
 
-                const modal = new window.bootstrap.Modal(document.getElementById('viewModal'));
-                modal.show();
-            }).catch((error) => {
-                setError("Error Viewing");
-            })
+        if (edit) {
+            setEdit(edit);
+        }
+        setRecrodId(id);
     }
 
     function handleUpdate() {
-        document.getElementById('updateField1').value = record.field1; // Example field
 
-        // Show the modal
-        const modal = new window.bootstrap.Modal(document.getElementById('updateModal'));
-        modal.show();
-    }
-
-    function handleEdit (id) {
-        const edit= record.find((record) => record.id === id);
-
-    }
-
-    function handleSubmitUpdate() {
-        const updates = {
-            field1: document.getElementById('name').value
+        if (!edit) {
+            alert('No record selected for update');
+            return;
         }
 
-        createAPIEndpoint()
-            .update(updates)
+        createAPIEndpoint('update/')
+            .update(edit.id, edit)
             .then(() => {
-                alert('Record updated successfully');
-            })
-            .catch((error) => {
-                console.error('There was an issue when updating this record.', error);
-                setError('There was an issue when updating this record.');
+                const updatedRecord = record.map((item) =>
+                    item.id === edit.id ? edit : item
+                );
+                console('Record update: ', updatedRecord)
+                setRecord(updatedRecord);
+                setEdit(null);
+                alert('Record updated successfully.');
+                window.location.reload();
+            }).catch((error) => {
+                console.error('Error updating record: ', error);
+                window.location.reload();
             })
     }
 
@@ -175,16 +168,10 @@ export default function Leaderboard() {
                                     {columnKeys.map((key) => (
                                         <td key={`${record.id}-${key}`}>{record[key]}</td>
                                     ))}
-                                    <td> {/* Action buttons */}
-                                        <button
-                                            className='btn btn-primary btn-sm me-2'
-                                            onClick={() => handleView(record.id)}
-                                        >
-                                            View
-                                        </button>
+                                    <td>
                                         <button
                                             className='btn btn-warning btn-sm me-2'
-                                            onClick={() => handleUpdate(record.id)}
+                                            onClick={() => handleEdit(record.id)}
                                         >
                                             Update
                                         </button>
@@ -204,28 +191,43 @@ export default function Leaderboard() {
                     <p>No records found for the selcted type</p>
                 )}
 
-                <table className="table table-bordered custom-table" border="1">
-                    <thead className="table-success">
-                        <tr>
-                            {columnKeys.map((key) => (
-                                <th key={key}>{key}</th>
+                {edit && (
+                    <div className='update-form'>
+                        <h3>Update Record</h3>
+                        <form>
+                            {Object.keys(edit).map((key) => (
+                                <div className='mb-3' key={key}>
+                                    <label htmlFor={key} className='form-label'>
+                                        {key}
+                                    </label>
+                                    <input
+                                        type='text'
+                                        className='form-control'
+                                        id={key}
+                                        name={key}
+                                        value={edit[key]}
+                                        onChange={(e) =>
+                                            setEdit((prevEdit) => ({
+                                                ...prevEdit,
+                                                [key]: e.target.value,
+                                            }))
+                                        }
+                                    />
+                                </div>
                             ))}
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {record.map((record) => (
-                            <tr key={record.id}>
-                                {columnKeys.map((key) => (
-                                    <td key={`${record.id}-${key}`}>{record[key]}</td>
-                                ))}
-                                <td>
-                                    <button className='btn btn-warning' onClick={() => handleEdit(record.id)}>Edit</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                            <button type='button' className='btn btn-primary' onClick={handleUpdate}>
+                                Save Changes
+                            </button>
+                            <button
+                                type='button'
+                                className='btn btn-secondary'
+                                onClick={() => setEdit(null)}
+                            >
+                                Cancel
+                            </button>
+                        </form>
+                    </div>
+                )}
 
             </div>
         </div>
