@@ -94,6 +94,6 @@ The application features a user-friendly navigation bar with the following tabs:
    - Users can send messages or inquiries for assistance or further information.
 
 
-## 💚 Mission
+## Mission
 **EnviroFriendly:** Educating and empowering communities to make the world cleaner, greener, and more sustainable. Together, we can make a difference!
 
