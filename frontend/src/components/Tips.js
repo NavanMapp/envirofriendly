@@ -22,16 +22,18 @@ function Tips() {
         if (Array.isArray(data)) {
           setItems(data);
         } else {
-          console.log("API cannot retrieve the types requested");
+          setError("API cannot retrieve the types requested");
         }
       }).catch((error) => {
-        console.log("Error fetching types from backend: ", error)
+        setError("Error fetching types from backend: ", error)
       })
   },[])
 
   function handleTips(e) {
+    e.preventDefault()
 
- const type = e.target.value;
+    const type = e.target.value;
+    setSelectedOption(type);
     setLoading(true);
     setError('');
 
@@ -67,7 +69,7 @@ function Tips() {
       <h2 className='text-center mb-4'>Recycling Tips and Guidelines</h2>
       <div className='row align-items-center'>
         <div className='col-md-6'>
-          <div className='nav-pills'>
+          <div className='nav-pills' >
             <select value={selectedOption} onChange={handleTips} className='form-select mb-3'>
               <option value=''>*** Recycling Tips by Type ***</option>
               {items.map((key) => (

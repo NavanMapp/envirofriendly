@@ -1,9 +1,9 @@
 package com.enviro.assessment.grad001.navanmaphalala.controller;
 
+import com.enviro.assessment.grad001.navanmaphalala.model.Tips;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.enviro.assessment.grad001.navanmaphalala.model.Tips;
 import com.enviro.assessment.grad001.navanmaphalala.service.TipsService;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class TipsController {
         return new ResponseEntity<>(tips, HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<Tips> getTipsList() {
         Tips allTips = tipsService.getAllTips();
         return ResponseEntity.ok(allTips);

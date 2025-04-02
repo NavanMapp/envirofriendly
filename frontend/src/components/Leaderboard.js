@@ -69,12 +69,6 @@ export default function Leaderboard() {
         const type = e.target.value;
         setSelectedOption(type);
 
-        if(record.length === 0 && !loading && selectOption) {
-            alert('No records found.');
-            window.location.reload();
-            return;
-        }
-
         setLoading(true);
         setError('');
 
@@ -82,10 +76,8 @@ export default function Leaderboard() {
             .getByType(type)
             .then((response) => {
                 setRecord(response.data);
-                console.log(response.data);
             }).catch((error) => {
-                setError('Records cannot be found. Please try again!');
-                console.error('Error when fetching the records: ', error);
+                setError('Records cannot be found. Please try again!', error);
             }).finally(() => setLoading(false));
     }
 
@@ -131,7 +123,7 @@ export default function Leaderboard() {
                 alert('Record updated successfully.');
                 window.location.reload();
             }).catch((error) => {
-                console.error('Error updating record: ', error);
+                setError('Error updating record: ', error);
                 window.location.reload();
             })
     }
@@ -187,6 +179,7 @@ export default function Leaderboard() {
                         </tbody>
                     </table>
                 )}
+                
                 {record.length === 0 && !loading && selectOption && (
                     <p>No records found for the selcted type</p>
                 )}

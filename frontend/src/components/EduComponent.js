@@ -11,7 +11,7 @@ function EduComponent() {
         createAPIEndpoint()
             .getTips()
             .then((response) => {
-                console.log('response: ', response);
+                // console.log('response: ', response);
                 if (!response.ok) {
                     throw new Error("Network response not ok");
                 }
@@ -26,8 +26,7 @@ function EduComponent() {
                     alert('API did not return the array required.')
                 }
             }).catch((error) => {
-                console.error(error);
-                setError('There was an error fetching the tips. Please try again later.');
+                setError('There was an error fetching the tips. Please try again later.', error);
             })
     }, [])
 

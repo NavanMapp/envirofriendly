@@ -25,10 +25,10 @@ function UserEntry() {
         if (Array.isArray(data)) {
           setItem(data);
         } else {
-          console.error('API did not return an array', data)
+          setError('API did not return an array', data)
         }
       })
-      .catch((error) => alert('Error when fetching from backend', error))
+      .catch((error) => setError('Error when fetching from backend', error))
 
   }, [])
 
